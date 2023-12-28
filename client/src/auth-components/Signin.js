@@ -34,9 +34,9 @@ const Signin = ({router}) => {
                 authenticate(response, () => {
                     setValues({ ...values, email: '', password: '', buttonText: 'Submitted' })
                     if (isAuth() && isAuth().role === "admin") {
-                        navigate('/admin')
+                        navigate('../pharma/admin')
                     } else {
-                        navigate('/private')
+                        navigate('../pharma/private')
                     }
                 })
             })

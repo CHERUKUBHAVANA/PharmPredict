@@ -28,14 +28,15 @@ const pharmaSchema = new mongoose.Schema({
     salt:{
         type: String
     },
-    resetPasswordLink:{
-        data: String,
-        // default: ''
-    },
+    
     role:{
         type: String,
         default: 'pharma'
     },
+    resetPasswordLink:{
+        data: String,
+        // default: ''
+    }
 }, {timestamps: true})
 
 pharmaSchema.virtual('password')

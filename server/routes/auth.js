@@ -8,6 +8,6 @@ const router = express.Router()
 router.post('/signup',userSignupvalidator, runValidation, signup)
 router.post('/account-activation', accountActivation)
 router.post('/signin',userSigninValidator, runValidation, signin)
-router.post('/forgot-password', forgotPasswordValidator, runValidation, forgotPassword)
-router.post('/resetPassword',resetPasswordValidator, runValidation, resetPassword)
+router.put('/forgot-password', forgotPasswordValidator, runValidation, forgotPassword)
+router.put('/reset-password',resetPasswordValidator, runValidation, resetPassword)
 module.exports = router

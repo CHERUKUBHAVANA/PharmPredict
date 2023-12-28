@@ -9,16 +9,16 @@ import 'react-toastify/dist/ReactToastify.min.css'
 const Activate = () => {
     const {token} = useParams()
     const [values, setValues] = useState({
-        name: "",
+        pharmaName: "",
         token: '',
         show: true
     })
 
-    const { name } = values
+    const { pharmaName } = values
     useEffect(() => {
-        let {name} = jwtDecode(token)
+        let {pharmaName} = jwtDecode(token)
         if(token){
-            setValues({...values, name, token})
+            setValues({...values, pharmaName, token})
         }
     }, [token, values])
 
@@ -42,7 +42,7 @@ const Activate = () => {
     const activationLink = () => {
         return (
             <div className="text-center">
-                <h1 className="p-5">Hey {name}, Ready to activate your account?</h1>
+                <h1 className="p-5">Hey {pharmaName}, Ready to activate your account?</h1>
                 <button className="btn btn-outline-primary" onClick={clickSubmit}>Activate Account</button>
             </div>
         )

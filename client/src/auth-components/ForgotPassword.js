@@ -19,7 +19,7 @@ const ForgotPassword = () => {
     const clickSubmit = (event) => {
         event.preventDefault()
         setValues({ ...values, buttonText: 'Submitting' })
-        axios({ //insted of postman
+        axios({ 
             method: 'PUT',
             url: `${process.env.REACT_APP_API}/forgot-password`,
             data: { email }
@@ -29,6 +29,7 @@ const ForgotPassword = () => {
                 setValues({...values, buttonText: 'Requested'})
             })
             .catch(error => {
+                console.log(error)
                 setValues({ ...values, buttonText: 'Request password reset link' })
                 toast.error(error.response.data.error)
             })

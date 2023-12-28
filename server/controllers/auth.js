@@ -113,11 +113,11 @@ exports.signin = (req, res) => {
                 })
             }
             const token = jwt.sign({ _id: pharma._id }, process.env.JWT_SECRET, { expiresIn: '7d' })
-            const { _id, regId, pharmaName, email } = pharma
+            const { _id, regId, pharmaName, email, role } = pharma
 
             return res.json({
                 token: token,
-                user: { _id, regId, pharmaName, email }
+                user: { _id, regId, pharmaName, email, role }
             })
         })
         .catch((err) => {
@@ -134,7 +134,7 @@ exports.requireSignin = expressjwt({ //Middleware -  so that only authorized/log
 
 exports.adminMiddleware = (req, res, next) => {
     // console.log(req.auth)
-    User.findById({ _id: req.auth._id }).exec()
+    Pharmacy.findById({ _id: req.auth._id }).exec()
     .then((user)=>{
         if (!user) {
             return res.status(400).json({
@@ -158,7 +158,7 @@ exports.adminMiddleware = (req, res, next) => {
 
 exports.forgotPassword = (req, res) => {
     const { email } = req.body;
-    Pharmacy.findOne({ email })
+    Pharmacy.findOne({ email }).exec()
         .then((pharma) => {
             if (!pharma) {
                 return res.status(400).json({
@@ -197,7 +197,7 @@ exports.forgotPassword = (req, res) => {
                     subject: "Password Reset Link",
                 },
             }
-            return pharma.updateOne({ resetPasswordLink: token })
+            return pharma.updateOne({ resetPasswordLink: token }).exec()
                 .then((pharma) => {
                     const callback = (err, data, response) => {
                         if (err) {
@@ -221,6 +221,11 @@ exports.forgotPassword = (req, res) => {
                         "error": "Error sending reset password link!"
                     })
                 })
+        })
+        .catch((err)=>{
+            return res.status(400).json({
+                error: "Email doesn't exist"
+            })
         })
         
 }

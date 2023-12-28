@@ -17,8 +17,8 @@ const PharmRoutes = ()=>{
                 <Route path="/" exact element={<App/>}/>
                 <Route path='/pharma/signup' exact element={<Signup/>}/>
                 <Route path='/pharma/signin' exact element={<Signin/>}/>
-                <Route path="/private" element={<PrivateRoute><Private/></PrivateRoute>} />
-                <Route path="/admin" element={<AdminRoute><Admin/></AdminRoute>} />
+                <Route path="/pharma/private" element={<PrivateRoute><Private/></PrivateRoute>} />
+                <Route path="/pharma/admin" element={<AdminRoute><Admin/></AdminRoute>} />
                 <Route path="/auth/password/forgot" exact element={<ForgotPassword/>}/>
                 <Route path="/auth/activate/:token" exact element={<Activate/>}/>
                 <Route path="/auth/password/reset/:token" exact element={<ResetPassword/>}/>

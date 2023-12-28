@@ -32,8 +32,8 @@ const Admin = ({ router }) => {
             }
         })
             .then((response) => {
-                const { role, name, email } = response.data
-                setValues({ ...values, role, name, email })
+                const { role, pharmaName, email } = response.data
+                setValues({ ...values, role, pharmaName, email })
             })
             .catch((error) => {
                 if (error.response.status === 401) {
@@ -44,10 +44,10 @@ const Admin = ({ router }) => {
             })
     }
 
-    const { role, name, email, password, buttonText } = values
+    const { role, pharmaName, email, password, buttonText } = values
 
-    const handleChange = (name) => (event) => {
-        setValues({ ...values, [name]: event.target.value })
+    const handleChange = (pharmaName) => (event) => {
+        setValues({ ...values, [pharmaName]: event.target.value })
     }
 
     const clickSubmit = (event) => {
@@ -59,7 +59,7 @@ const Admin = ({ router }) => {
             headers: {
                 Authorization: `Bearer ${token}`
             },
-            data: { name, password }  //similar to body part in postman, i.e, allowing name and password to be changed
+            data: { pharmaName, password }  //similar to body part in postman, i.e, allowing name and password to be changed
         })
             .then(response => {
                 // console.log('SIGNUP SUCCESS', response)
@@ -84,7 +84,7 @@ const Admin = ({ router }) => {
                 </div>
                 <div className="form-group">
                     <label className="text-muted">Name</label>
-                    <input onChange={handleChange('name')} value={name} type="text" className="form-control" />
+                    <input onChange={handleChange('pharmaName')} value={pharmaName} type="text" className="form-control" />
                 </div>
                 <div className="form-group">
                     <label className="text-muted">Email</label>
