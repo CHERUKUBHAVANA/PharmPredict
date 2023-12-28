@@ -6,8 +6,8 @@ const { runValidation } = require('../validators')
 const router = express.Router()
 
 router.post('/signup',userSignupvalidator, runValidation, signup)
-router.post('/accountActivation', accountActivation)
+router.post('/account-activation', accountActivation)
 router.post('/signin',userSigninValidator, runValidation, signin)
-router.post('/forgotPassword', forgotPasswordValidator, runValidation, forgotPassword)
+router.post('/forgot-password', forgotPasswordValidator, runValidation, forgotPassword)
 router.post('/resetPassword',resetPasswordValidator, runValidation, resetPassword)
 module.exports = router

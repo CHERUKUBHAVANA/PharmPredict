@@ -31,7 +31,11 @@ const pharmaSchema = new mongoose.Schema({
     resetPasswordLink:{
         data: String,
         // default: ''
-    }
+    },
+    role:{
+        type: String,
+        default: 'pharma'
+    },
 }, {timestamps: true})
 
 pharmaSchema.virtual('password')

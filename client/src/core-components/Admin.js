@@ -7,10 +7,10 @@ import { isAuth, getCookie, signout, updateUser } from "../auth-components/helpe
 import withRouter from './WithRouter'
 
 
-const Private = ({ router }) => {
+const Admin = ({ router }) => {
     const { navigate } = router
     const [values, setValues] = useState({
-        regId: "",
+        role: "",
         pharmaName: "",
         email: "",
         password: "",
@@ -32,8 +32,8 @@ const Private = ({ router }) => {
             }
         })
             .then((response) => {
-                const { regId, pharmaName, email } = response.data
-                setValues({ ...values, regId, pharmaName, email})
+                const { role, name, email } = response.data
+                setValues({ ...values, role, name, email })
             })
             .catch((error) => {
                 if (error.response.status === 401) {
@@ -44,10 +44,10 @@ const Private = ({ router }) => {
             })
     }
 
-    const { regId, pharmaName, email, password, buttonText } = values
+    const { role, name, email, password, buttonText } = values
 
-    const handleChange = (pharmaName) => (event) => {
-        setValues({ ...values, [pharmaName]: event.target.value })
+    const handleChange = (name) => (event) => {
+        setValues({ ...values, [name]: event.target.value })
     }
 
     const clickSubmit = (event) => {
@@ -55,13 +55,14 @@ const Private = ({ router }) => {
         setValues({ ...values, buttonText: 'Submitting' })
         axios({
             method: 'PUT',
-            url: `${process.env.REACT_APP_API}/pharma/update`,
+            url: `${process.env.REACT_APP_API}/admin/update`,
             headers: {
                 Authorization: `Bearer ${token}`
             },
-            data: { pharmaName, password }  //similar to body part in postman, i.e, allowing name and password to be changed
+            data: { name, password }  //similar to body part in postman, i.e, allowing name and password to be changed
         })
             .then(response => {
+                // console.log('SIGNUP SUCCESS', response)
                 updateUser(response, () => {
                     setValues({ ...values, buttonText: 'Submitted' })
                     toast.success("Profile updated successfully")
@@ -78,12 +79,12 @@ const Private = ({ router }) => {
         return (
             <form>
                 <div className="form-group">
-                    <label className="text-muted">Registration ID</label>
-                    <input defaultValue={regId} type="text" className="form-control" disabled />
+                    <label className="text-muted">Role</label>
+                    <input defaultValue={role} type="text" className="form-control" disabled />
                 </div>
                 <div className="form-group">
-                    <label className="text-muted">Pharmacy Name</label>
-                    <input onChange={handleChange('pharmaName')} value={pharmaName} type="text" className="form-control" />
+                    <label className="text-muted">Name</label>
+                    <input onChange={handleChange('name')} value={name} type="text" className="form-control" />
                 </div>
                 <div className="form-group">
                     <label className="text-muted">Email</label>
@@ -103,11 +104,11 @@ const Private = ({ router }) => {
         <Layout>
             <div className="col-md-6 offset-md-3">
                 <ToastContainer />
-                <h1 className="pt-5 text-center">Private</h1>
+                <h1 className="pt-5 text-center">Admin</h1>
                 <p className="lead text-center">Profile Update</p>
                 {updateForm()}
             </div>
         </Layout>
     )
 }
-export default withRouter(Private);
+export default withRouter(Admin);

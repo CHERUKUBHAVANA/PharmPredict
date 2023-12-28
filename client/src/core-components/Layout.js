@@ -37,16 +37,16 @@ const Layout = ({ children, router }) => {
 
             {isAuth() && isAuth().role === "admin" && (
                 <li className='nav-item'>
-                    <Link to="/admin" className=' nav-link' style={isActive('/admin')}>
+                    <Link to="/admin" className=' nav-link' style={isActive('/pharma/admin')}>
                     {isAuth().name.charAt(0).toUpperCase() + isAuth().name.slice(1)}
                     </Link>
                 </li>
             )}
 
-            {isAuth() && isAuth().role === "subscriber" && (
+            {isAuth() && isAuth().role === "pharma" && (
                 <li className='nav-item'>
                     <Link to="/private" className=' nav-link' style={isActive('/private')}>
-                        {isAuth().name}
+                        {isAuth().pharmaName}
                     </Link>
                 </li>
             )}

@@ -36,7 +36,7 @@ const Signin = ({router}) => {
                     if (isAuth() && isAuth().role === "admin") {
                         navigate('/admin')
                     } else {
-                        navigate('/pharma/private')
+                        navigate('/private')
                     }
                 })
             })

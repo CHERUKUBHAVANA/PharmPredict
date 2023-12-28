@@ -14,11 +14,13 @@ mongoose.connect(process.env.DATABASE,{})
 .catch(err => console.log('DB CONNECTION ERROR:', err));
 
 const authRoutes = require('./routes/auth')
+const pharmaRoutes = require('./routes/pharma')
 
 app.use(bodyParser.json())
 app.use(cors()); 
 
 app.use('/pharma', authRoutes)
+app.use('/pharma', pharmaRoutes)
 
 app.get('/',(req,res)=>{
     res.json({

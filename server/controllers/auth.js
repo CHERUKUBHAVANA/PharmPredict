@@ -1,5 +1,6 @@
-const Pharmacy = require("../models/Pharmacy")
+const Pharmacy = require('../models/pharmacy')
 const elasticEmail = require('@elasticemail/elasticemail-client');
+const { expressjwt } = require("express-jwt");
 const jwt = require('jsonwebtoken')
 const _ = require('lodash')
 
@@ -126,6 +127,35 @@ exports.signin = (req, res) => {
         })
 }
 
+exports.requireSignin = expressjwt({ //Middleware -  so that only authorized/logged in user can see the profile
+    secret: process.env.JWT_SECRET,
+    algorithms: ["HS256"], //makes data available in req.user
+})
+
+exports.adminMiddleware = (req, res, next) => {
+    // console.log(req.auth)
+    User.findById({ _id: req.auth._id }).exec()
+    .then((user)=>{
+        if (!user) {
+            return res.status(400).json({
+                error: "Pharma not found"
+            })
+        }
+        if (user.role !== "admin") {
+            return res.status(400).json({
+                error: "Admin resource access denied"
+            })
+        }
+        req.profile = user
+        next()
+    })
+    .catch((err)=>{
+        return res.status(400).json({
+            error: "Pharma not found"
+        })
+    })
+}
+
 exports.forgotPassword = (req, res) => {
     const { email } = req.body;
     Pharmacy.findOne({ email })
@@ -192,6 +222,7 @@ exports.forgotPassword = (req, res) => {
                     })
                 })
         })
+        
 }
 
 exports.resetPassword = (req, res) => {
