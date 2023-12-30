@@ -10,6 +10,7 @@ import ForgotPassword from './auth-components/ForgotPassword'
 import Admin from './core-components/Admin'
 import AdminRoute from './auth-components/AdminRoute'
 import ResetPassword from './auth-components/ResetPassword'
+import AddMedicine from './admin-components/AddMedicine'
 const PharmRoutes = ()=>{
     return(
         <BrowserRouter>
@@ -19,6 +20,7 @@ const PharmRoutes = ()=>{
                 <Route path='/pharma/signin' exact element={<Signin/>}/>
                 <Route path="/pharma/private" element={<PrivateRoute><Private/></PrivateRoute>} />
                 <Route path="/pharma/admin" element={<AdminRoute><Admin/></AdminRoute>} />
+                <Route path="/pharma/admin/add-medicines" element={<AdminRoute><AddMedicine/></AdminRoute>} />
                 <Route path="/auth/password/forgot" exact element={<ForgotPassword/>}/>
                 <Route path="/auth/activate/:token" exact element={<Activate/>}/>
                 <Route path="/auth/password/reset/:token" exact element={<ResetPassword/>}/>

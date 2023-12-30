@@ -6,9 +6,11 @@ import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
 import { authenticate, isAuth } from "./helpers";
 import withRouter from "../core-components/WithRouter";
+import { CDBInput, CDBCard, CDBCardBody, CDBIcon, CDBBtn, CDBLink, CDBContainer } from 'cdbreact';
+import { Container } from "react-bootstrap";
 
-const Signin = ({router}) => {
-    const {navigate} = router
+const Signin = ({ router }) => {
+    const { navigate } = router
     const [values, setValues] = useState({
         email: "",
         password: "",
@@ -49,20 +51,27 @@ const Signin = ({router}) => {
 
     const signinForm = () => {
         return (
-            <form className="col-md-6 offset-md-3">
-                <div className="form-group">
-                    <label className="text-muted">Email</label>
-                    <input onChange={handleChange('email')} value={email} type="email" className="form-control" style={{backgroundColor:'#e6ffff'}}/>
+            <CDBContainer>
+                <div className="d-flex justify-content-center align-items-center">
+                    <CDBCard style={{ width: '30em', backgroundColor: 'white' }}>
+                        <div style={{ background: 'skyblue' }} className="text-center text-black">
+                            <p className="h5 mt-2 py-4 font-weight-bold">Sign In</p>
+                        </div>
+                        <CDBCardBody className="mx-4">
+                            <CDBInput hint="E-mail" label="Email" type="email" onChange={handleChange('email')} value={email} />
+                            <CDBInput hint="Password" label="Password" type="password" onChange={handleChange('password')} value={password} />
+                            <div className="mt-5 d-flex flex-column gap-2 justify-content-center align-items-center">
+                                <CDBBtn outline color="dark" type="submit" onClick={clickSubmit}>
+                                    {buttonText}
+                                </CDBBtn>
+
+                                <CDBLink to="/auth/password/forgot" className="ms-auto text-danger" >Forgot Password ?</CDBLink>
+                            </div>
+
+                        </CDBCardBody>
+                    </CDBCard>
                 </div>
-                <div className="form-group">
-                    <label className="text-muted">Password</label>
-                    <input onChange={handleChange('password')} value={password} type="password" className="form-control" style={{backgroundColor:'#e6ffff'}}/>
-                </div><br />
-                <div className="m-2" style={{display:"inline-block"}}>
-                    <button className="btn btn-outline-success" onClick={clickSubmit}>{buttonText}</button>
-                </div>
-                <Link to="/auth/password/forgot" className="btn btn-sm btn-outline-danger mr-0" style={{display:'inline-block', marginLeft:'60px'}}>Forgot Password?</Link>
-            </form>
+            </CDBContainer>
         )
     }
     return (
@@ -70,11 +79,9 @@ const Signin = ({router}) => {
             <div className="col-md-6 offset-md-3">
                 <ToastContainer />
                 {isAuth() ? <Navigate to="/" /> : null}
-                <h1 className="text-center">Signin</h1>
-                {/* <FacebookLoginOption informParent={informParent}/> */}
                 {signinForm()}
-                <br/>
-                
+                <br />
+
             </div>
         </Layout>
     )

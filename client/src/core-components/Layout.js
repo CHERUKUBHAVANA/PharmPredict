@@ -1,14 +1,14 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import { Link } from 'react-router-dom'
 import withRouter from './WithRouter'
 import { isAuth, signout } from '../auth-components/helpers'
 const Layout = ({ children, router }) => {
-    const {location, navigate} = router
+    const { location, navigate } = router
     const pathname = location.pathname
     const nav = () => {
         const isActive = (path) => {
             if (path === pathname) {
-                return { backgroundColor: "skyblue", color:"black" , border:"2px solid skyblue", borderRadius:"5px"}
+                return { backgroundColor: "skyblue", color: "black", border: "2px solid skyblue", borderRadius: "5px" }
             }
             else {
                 return { color: "black" }
@@ -38,7 +38,15 @@ const Layout = ({ children, router }) => {
             {isAuth() && isAuth().role === "admin" && (
                 <li className='nav-item'>
                     <Link to="/pharma/admin" className=' nav-link' style={isActive('/pharma/admin')}>
-                    {isAuth().pharmaName}
+                        {isAuth().pharmaName}
+                    </Link>
+                </li>
+            )}
+
+            {isAuth() && isAuth().role === "admin" && (
+                <li className='nav-item'>
+                    <Link to="/pharma/admin/add-medicines" className=' nav-link' style={isActive('/pharma/admin/add-medicines')}>
+                        Add medicines
                     </Link>
                 </li>
             )}
@@ -53,7 +61,7 @@ const Layout = ({ children, router }) => {
 
             {isAuth() && (
                 <li className='nav-item'>
-                    <span className='nav-link text-dark' style={{ cursor: 'pointer'}} onClick={() => {
+                    <span className='nav-link text-dark' style={{ cursor: 'pointer' }} onClick={() => {
                         signout(() => {
                             navigate('/')
                         })
@@ -63,10 +71,13 @@ const Layout = ({ children, router }) => {
 
         </ul>)
     }
+   
     return (
         <Fragment>
+            <div className='mb-3'>
             {nav()}
-            <hr/>
+            </div>
+            <hr />
             <div className='container'>
                 {children}
             </div>
