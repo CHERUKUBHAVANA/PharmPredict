@@ -33,6 +33,7 @@ const Signin = ({ router }) => {
         })
             .then(response => {
                 //save the response {user, token} in localStorage/ cookie
+                toast.success(response.data.message)
                 authenticate(response, () => {
                     setValues({ ...values, email: '', password: '', buttonText: 'Submitted' })
                     if (isAuth() && isAuth().role === "admin") {

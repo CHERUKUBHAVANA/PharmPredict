@@ -15,12 +15,14 @@ mongoose.connect(process.env.DATABASE,{})
 
 const authRoutes = require('./routes/auth')
 const pharmaRoutes = require('./routes/pharma')
+const medicineRoutes = require('./routes/medicine')
 
 app.use(bodyParser.json())
 app.use(cors()); 
 
 app.use('/pharma', authRoutes)
 app.use('/pharma', pharmaRoutes)
+app.use('/pharma', medicineRoutes)
 
 app.get('/',(req,res)=>{
     res.json({

@@ -2,6 +2,7 @@ import React, { Fragment, useState } from 'react'
 import { Link } from 'react-router-dom'
 import withRouter from './WithRouter'
 import { isAuth, signout } from '../auth-components/helpers'
+import { Image } from 'react-bootstrap'
 const Layout = ({ children, router }) => {
     const { location, navigate } = router
     const pathname = location.pathname
@@ -15,6 +16,9 @@ const Layout = ({ children, router }) => {
             }
         }
         return (<ul className='nav text-dark m-1'>
+            <li className='nav-item'>
+                <Image src='https://dm0qx8t0i9gc9.cloudfront.net/watermarks/image/rDtN98Qoishumwih/plus-sign-in-blue-circle_G1mO_ILO_SB_PM.jpg' width={50} style={{marginRight:'10px'}} roundedCircle/>
+            </li>
             <li className='nav-item'>
                 <Link to='/' className=' nav-link' style={isActive('/')}>
                     Home
