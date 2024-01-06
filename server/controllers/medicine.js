@@ -16,3 +16,24 @@ exports.addMedicine = (req, res) => {
             })
         })
 }
+
+exports.displayMedicine = (req, res) => {
+    const { page, limit } = req.query;
+    const skip = (page - 1) * limit;
+    try {
+        Medicine.find()
+        .then((drug)=>{
+            res.json(drug)
+        })
+        .catch((err)=>{
+            console.log(err)
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json(error);
+    }
+}
+
+exports.searchMedicine = (req, res) => {
+
+}

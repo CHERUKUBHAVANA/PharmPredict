@@ -24,7 +24,7 @@ const App = () => {
   const renderCards = () => {
     return cardsData.map((card, index) => (
       <Col md={4} key={index} className="mb-4">
-        <Card className="h-100 shadow">
+        <Card className="h-800 shadow">
           <Card.Body>
             <Card.Title className="h4">{card.title}</Card.Title>
             <Card.Text className="card-description">{card.description}</Card.Text>

@@ -3,6 +3,7 @@ import { CDBContainer, CDBRow, CDBCol, CDBInput, CDBBtn, CDBCard } from 'cdbreac
 import Layout from '../core-components/Layout';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify'
+
 const ClassicForm = () => {
     const [values, setValues] = useState({
         name: '',
