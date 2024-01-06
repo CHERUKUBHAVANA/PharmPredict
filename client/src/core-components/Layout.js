@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import withRouter from './WithRouter'
 import { isAuth, signout } from '../auth-components/helpers'
@@ -15,9 +15,10 @@ const Layout = ({ children, router }) => {
                 return { color: "black" }
             }
         }
-        return (<ul className='nav text-dark m-1'>
+        return (
+        <ul className='nav text-dark m-1'>
             <li className='nav-item'>
-                <Image src='https://dm0qx8t0i9gc9.cloudfront.net/watermarks/image/rDtN98Qoishumwih/plus-sign-in-blue-circle_G1mO_ILO_SB_PM.jpg' width={50} style={{marginRight:'10px'}} roundedCircle/>
+                <Image src='https://dm0qx8t0i9gc9.cloudfront.net/watermarks/image/rDtN98Qoishumwih/plus-sign-in-blue-circle_G1mO_ILO_SB_PM.jpg' width={50} style={{ marginRight: '10px' }} roundedCircle />
             </li>
             <li className='nav-item'>
                 <Link to='/' className=' nav-link' style={isActive('/')}>
@@ -28,12 +29,12 @@ const Layout = ({ children, router }) => {
                 <Fragment>
                     <li className='nav-item'>
                         <Link to='/pharma/signin' className=' nav-link' style={isActive('/pharma/signin')}>
-                            Signin
+                            SignIn
                         </Link>
                     </li>
                     <li className='nav-item'>
                         <Link to='/pharma/signup' className=' nav-link' style={isActive('/pharma/signup')}>
-                            Signup
+                            SignUp
                         </Link>
                     </li>
                 </Fragment>
@@ -64,22 +65,29 @@ const Layout = ({ children, router }) => {
             )}
 
             {isAuth() && (
-                <li className='nav-item'>
-                    <span className='nav-link text-dark' style={{ cursor: 'pointer' }} onClick={() => {
-                        signout(() => {
-                            navigate('/')
-                        })
-                    }}>Signout</span>
-                </li>
+                <Fragment>
+                    <li className='nav-item'>
+                        <Link to="/pharma/display-medicine" className=' nav-link' style={isActive('/pharma/display-medicine')}>
+                            View Medicines
+                        </Link>
+                    </li>
+                    <li className='nav-item'>
+                        <span className='nav-link text-dark' style={{ cursor: 'pointer' }} onClick={() => {
+                            signout(() => {
+                                navigate('/')
+                            })
+                        }}>SignOut</span>
+                    </li>
+                </Fragment>
             )}
 
         </ul>)
     }
-   
+
     return (
         <Fragment>
             <div className='mb-3'>
-            {nav()}
+                {nav()}
             </div>
             <hr />
             <div className='container'>

@@ -31,6 +31,10 @@ body{
   display: block;
 }
 
+.nav-item{
+  font-weight: 600;
+}
+
 
 /* .App h1{
   text-align: center;

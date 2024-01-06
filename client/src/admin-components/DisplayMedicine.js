@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Card, Button, Row, Col, Alert, Form } from 'react-bootstrap';
+import { Card, Button, Row, Col, Alert, Form, Spinner } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import Layout from '../core-components/Layout';
 
 const DisplayMedicine = () => {
     const [medicineData, setMedicineData] = useState([]);
@@ -11,6 +12,7 @@ const DisplayMedicine = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
+    const [loadingReset, setLoadingReset] = useState(false);
     const fetchMedicineData = async () => {
         try {
             const response = await axios.get(`${process.env.REACT_APP_API}/display-medicine`);
@@ -35,10 +37,15 @@ const DisplayMedicine = () => {
         setMedicineData(filteredMedicines);
         setVisibleMedicines(10);
     };
-    const resetSearch = () => {
-        setSearchTerm('');
-        fetchMedicineData();
-        setVisibleMedicines(10);
+    const resetSearch = async () => {
+        try {
+            setLoadingReset(true);
+            setSearchTerm('');
+            await fetchMedicineData();
+            setVisibleMedicines(10);
+        } finally {
+            setLoadingReset(false);
+        }
     };
 
     if (loading || error) {
@@ -56,8 +63,9 @@ const DisplayMedicine = () => {
     }
 
     return (
+        <Layout>
         <div>
-            <h2 className="mb-4 text-center">Medicine List</h2>
+            {/* <h2 className="mb-4 text-center" style={{color:'darkblue'}}>Medicines List</h2> */}
             <Form className="m-3">
                 <Row className="justify-content-end">
                     <Col xs="auto">
@@ -78,13 +86,17 @@ const DisplayMedicine = () => {
                         </Form.Group>
                     </Col>
                     <Col xs="auto">
-                        <Button variant="primary" className="mr-2" onClick={handleSearch}>
+                        <Button variant="info" className="mr-2" onClick={handleSearch}>
                             {' '}Search
                         </Button>
                     </Col>
                     <Col xs="auto">
                         <Button variant="secondary" onClick={resetSearch}>
-                            Reset
+                        {loadingReset ? (
+                                <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
+                            ) : (
+                                'Reset'
+                            )}
                         </Button>
                     </Col>
                 </Row>
@@ -92,11 +104,14 @@ const DisplayMedicine = () => {
             <Row>
                 {medicineData.slice(0, visibleMedicines).map((medicine, index) => (
                     <Col key={index} md={6}>
-                        <Card className="m-4" style={{ boxShadow: '0 4px 8px rgba(0,0,0,0.1)' }}>
+                        <Card className="m-4" style={{ boxShadow: '0 4px 8px rgba(0,0,0,0.1)', backgroundColor: 'lightblue', width: '85%', height: '85%'}}>
                             <Card.Body className='text-center'>
                                 <Card.Title>{medicine.name.toUpperCase()}</Card.Title>
-                                <Card.Text>Substitute: {medicine.substitute0}</Card.Text>
-                                <Card.Text>Side Effect: {medicine.sideEffect0}</Card.Text>
+                                <Card.Title>{medicine.ChemicalClass!=='NA'?medicine.ChemicalClass:' '}</Card.Title>
+                                <Card.Text><strong>Substitutes:</strong> {medicine.substitute0},{' '}{medicine.substitute1},{' '}{medicine.substitute2}</Card.Text>
+                                <Card.Text><strong>Side Effects:</strong> {medicine.sideEffect0},{' '}{medicine.sideEffect1}, {' '}{medicine.sideEffect2}</Card.Text>
+                                <Card.Text><strong>Uses:</strong> {medicine.use0},{' '}{medicine.use1}, {' '}{medicine.use2}</Card.Text>
+                                <Button variant='info' style={{paddingLeft:'20px', paddingRight:'20px', border:'1.5px solid black', borderRadius:'10px'}} >Buy</Button>
                             </Card.Body>
                         </Card>
                     </Col>
@@ -104,12 +119,13 @@ const DisplayMedicine = () => {
             </Row>
             <div className='text-center'>
                 {visibleMedicines < medicineData.length && (
-                    <Button variant="primary" className="mt-3" onClick={loadMore}>
-                        Load More
+                    <Button variant="info" className="mt-3 mb-3" onClick={loadMore}>
+                        View More
                     </Button>
                 )}
             </div>
         </div>
+        </Layout>
     );
 };
 
