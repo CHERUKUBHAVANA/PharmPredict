@@ -4,6 +4,11 @@ exports.addMedicine = (req, res) => {
     console.log(req.body)
     const { name, substitute0, substitute1, substitute2, substitute3, substitute4, sideEffect0, sideEffect1, sideEffect2, sideEffect3, sideEffect4, use0, use1, use2, use3, use4, ChemicalClass, ActionClass } = req.body;
     const newMedicine = new Medicine({ name, substitute0, substitute1, substitute2, substitute3, substitute4, sideEffect0, sideEffect1, sideEffect2, sideEffect3, sideEffect4, use0, use1, use2, use3, use4, ChemicalClass, ActionClass })
+    if(!name){
+        return res.status(400).json({
+            error: 'Drug name is required!'
+        })
+    }
     newMedicine.save()
         .then(() => {
             return res.json({
@@ -11,6 +16,7 @@ exports.addMedicine = (req, res) => {
             })
         })
         .catch((err) => {
+            console.log(err)
             return res.status(400).json({
                 error: 'Error saving medicine in database, Try again'
             })
@@ -44,6 +50,17 @@ exports.displayMedicine = (req, res) => {
 };
 
 
-exports.searchMedicine = (req, res) => {
+exports.searchMedicine = async (req, res) => {
+    const searchTerm = req.query.searchTerm || '';
+    try {
+        const filteredMedicines = await Medicine.find({ name: { $regex: new RegExp(searchTerm, 'i') } });
+        res.json(filteredMedicines);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Error searching medicine data' });
+    }
+}
 
+exports.predictClass = (req, res) =>{
+    
 }

@@ -9,27 +9,27 @@ const medicineSchema = new mongoose.Schema({
     substitute0: {
         type: String,
         trim: true,
-        required: true,
+        // required: true,
     },
     substitute1: {
         type: String,
         trim: true,
-        required: true,
+        // required: true,
     },
     substitute2: {
         type: String,
         trim: true,
-        required: true,
+        // required: true,
     },
     substitute3: {
         type: String,
         trim: true,
-        required: true,
+        // required: true,
     },
     substitute4: {
         type: String,
         trim: true,
-        required: true,
+        // required: true,
     },
     sideEffect0:{
         type: String,

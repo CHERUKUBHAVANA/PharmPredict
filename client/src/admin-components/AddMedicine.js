@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { CDBContainer, CDBRow, CDBCol, CDBInput, CDBBtn, CDBCard } from 'cdbreact';
 import Layout from '../core-components/Layout';
 import axios from 'axios';
@@ -27,10 +27,6 @@ const ClassicForm = () => {
         buttonText: "Submit"
     })
 
-    useEffect(()=>{
-
-    },[values])
-
     const { name, substitute0, substitute1, substitute2, substitute3, substitute4, sideEffect0, sideEffect1, sideEffect2, sideEffect3, sideEffect4, use0, use1, use2, use3, use4, ChemicalClass, ActionClass } = values
 
     const handleChange = (name) => (event) => {
@@ -38,23 +34,19 @@ const ClassicForm = () => {
     }
 
     const clickSubmit = (event) => {
-        console.log(name, substitute0, sideEffect0, ChemicalClass)
         event.preventDefault()
         setValues({ ...values, buttonText: 'Submitting' })
-        axios({ //insted of postman
+        axios({ 
             method: 'POST',
-            url: `${process.env.REACT_APP_API}/add-medicine`,
+            url: `${process.env.REACT_APP_API}/admin/add-medicine`,
             data: { name, substitute0, substitute1, substitute2, substitute3, substitute4, sideEffect0, sideEffect1, sideEffect2, sideEffect3, sideEffect4, use0, use1, use2, use3, use4, ChemicalClass, ActionClass }
         })
             .then(response => {
+                setValues({ name: '', substitute0: '', substitute1: '', substitute2: '', substitute3: '', substitute4: '', sideEffect0: '', sideEffect1: '', sideEffect2: '', sideEffect3: '', sideEffect4: '', use0: '', use1: '', use2: '', use3: '', use4: '', ChemicalClass: '', ActionClass: '', buttonText: 'Submitted' })
                 toast.success(response.data.message) 
             })
             .catch(error => {
-                // setValues({ ...values, buttonText: 'Submit' })
                 toast.error(error.response.data.error)
-            })
-            .finally(()=>{
-                setValues({ name: '', substitute0: '', substitute1: '', substitute2: '', substitute3: '', substitute4: '', sideEffect0: '', sideEffect1: '', sideEffect2: '', sideEffect3: '', sideEffect4: '', use0: '', use1: '', use2: '', use3: '', use4: '', ChemicalClass: '', ActionClass: '', buttonText: 'Submitted' })
             })
     }
     return (

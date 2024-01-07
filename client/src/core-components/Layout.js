@@ -50,7 +50,7 @@ const Layout = ({ children, router }) => {
 
             {isAuth() && isAuth().role === "admin" && (
                 <li className='nav-item'>
-                    <Link to="/pharma/admin/add-medicines" className=' nav-link' style={isActive('/pharma/admin/add-medicines')}>
+                    <Link to="/pharma/admin/add-medicine" className=' nav-link' style={isActive('/pharma/admin/add-medicines')}>
                         Add medicines
                     </Link>
                 </li>

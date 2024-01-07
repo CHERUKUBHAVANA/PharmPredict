@@ -4,7 +4,8 @@ import { Card, Button, Row, Col, Alert, Form, Spinner } from 'react-bootstrap';
 import { BeatLoader } from 'react-spinners';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import Layout from '../core-components/Layout';
+import Layout from './Layout';
+import { toast, ToastContainer } from 'react-toastify'
 
 const DisplayMedicine = () => {
     const [medicineData, setMedicineData] = useState([]);
@@ -51,12 +52,24 @@ const DisplayMedicine = () => {
         }
     };
     
-    const handleSearch = () => {
-        const filteredMedicines = medicineData.filter((medicine) =>
-            medicine.name.toLowerCase().includes(searchTerm.toLowerCase())
-        );
-        setMedicineData(filteredMedicines)
-        setVisibleMedicines(10);
+    const handleSearch = async () => {
+        // const filteredMedicines = medicineData.filter((medicine) =>
+        //     medicine.name.toLowerCase().includes(searchTerm.toLowerCase())
+        // );
+        // setMedicineData(filteredMedicines)
+        // setVisibleMedicines(10);
+        try {
+            setLoading(true);
+            const response = await axios.get(`${process.env.REACT_APP_API}/search-medicine?searchTerm=${searchTerm}`);
+            // setFilteredMedicineData(response.data);
+            setMedicineData(response.data);
+            setVisibleMedicines(10);
+        } catch (error) {
+            toast.error(error.response.data.error)
+            setError('Error searching medicine data');
+        } finally {
+            setLoading(false);
+        }
     };
     const resetSearch = async () => {
         try {
@@ -68,6 +81,14 @@ const DisplayMedicine = () => {
             setLoadingReset(false);
         }
     };
+
+    const handleSubmit = (e) =>{
+        e.preventDefault()
+        axios({
+            method: 'POST',
+            url: `${process.env.REACT_APP_API}/predict-class`,
+        })
+    }
 
     if (loading || error) {
         return (
@@ -85,6 +106,7 @@ const DisplayMedicine = () => {
 
     return (
         <Layout>
+            <ToastContainer/>
             <div>
                 {/* <h2 className="mb-4 text-center" style={{color:'darkblue'}}>Medicines List</h2> */}
                 <Form className="m-3">
@@ -133,6 +155,7 @@ const DisplayMedicine = () => {
                                     <Card.Text><strong>Side Effects:</strong> {medicine.sideEffect0},{' '}{medicine.sideEffect1}, {' '}{medicine.sideEffect2}</Card.Text>
                                     <Card.Text><strong>Uses:</strong> {medicine.use0},{' '}{medicine.use1}, {' '}{medicine.use2}</Card.Text>
                                     <Button variant='info' style={{ paddingLeft: '20px', paddingRight: '20px', border: '1.5px solid black', borderRadius: '10px' }} >Buy</Button>
+                                    <Button variant='info' onClick={handleSubmit} style={{ paddingLeft: '20px', paddingRight: '20px', marginLeft:'10px', border: '1.5px solid black', borderRadius: '10px' }} >Therapeutic Class?</Button>
                                 </Card.Body>
                             </Card>
                         </Col>
