@@ -15,7 +15,12 @@ const DisplayMedicine = () => {
     const [loadingReset, setLoadingReset] = useState(false);
     const fetchMedicineData = async () => {
         try {
-            const response = await axios.get(`${process.env.REACT_APP_API}/display-medicine`);
+            const response = await axios.get(`${process.env.REACT_APP_API}/display-medicine`, {
+                params: {
+                    page: 1, // Set the initial page
+                    limit: 10, // Set the initial limit
+                },
+            });
             setMedicineData(response.data);
             setLoading(false);
         } catch (error) {
@@ -29,12 +34,28 @@ const DisplayMedicine = () => {
     }, []);
     const loadMore = () => {
         setVisibleMedicines((prevCount) => prevCount + 10);
+        fetchMoreMedicineData()
     };
+    const fetchMoreMedicineData = async () => {
+        try {
+            const response = await axios.get(`${process.env.REACT_APP_API}/display-medicine`, {
+                params: {
+                    page: Math.ceil((visibleMedicines + 1) / 10),
+                    limit: 10,
+                },
+            });
+            setMedicineData([...medicineData, ...response.data]);
+        } catch (error) {
+            console.error(error);
+            setError('Error fetching more medicine data');
+        }
+    };
+    
     const handleSearch = () => {
         const filteredMedicines = medicineData.filter((medicine) =>
             medicine.name.toLowerCase().includes(searchTerm.toLowerCase())
         );
-        setMedicineData(filteredMedicines);
+        setMedicineData(filteredMedicines)
         setVisibleMedicines(10);
     };
     const resetSearch = async () => {
@@ -64,67 +85,65 @@ const DisplayMedicine = () => {
 
     return (
         <Layout>
-        <div>
-            {/* <h2 className="mb-4 text-center" style={{color:'darkblue'}}>Medicines List</h2> */}
-            <Form className="m-3">
-                <Row className="justify-content-end">
-                    <Col xs="auto">
-                        <Form.Group controlId="searchTerm">
-                            <Row className="align-items-center m-0">
-                                <Col xs="auto">
-                                    <FontAwesomeIcon icon={faSearch} />
-                                </Col>
-                                <Col xs="auto">
-                                    <Form.Control
-                                        type="text"
-                                        placeholder="Search for a drug..."
-                                        value={searchTerm}
-                                        onChange={(e) => setSearchTerm(e.target.value)}
-                                    />
-                                </Col>
-                            </Row>
-                        </Form.Group>
-                    </Col>
-                    <Col xs="auto">
-                        <Button variant="info" className="mr-2" onClick={handleSearch}>
-                            {' '}Search
-                        </Button>
-                    </Col>
-                    <Col xs="auto">
-                        <Button variant="secondary" onClick={resetSearch}>
-                        {loadingReset ? (
-                                <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
-                            ) : (
-                                'Reset'
-                            )}
-                        </Button>
-                    </Col>
+            <div>
+                {/* <h2 className="mb-4 text-center" style={{color:'darkblue'}}>Medicines List</h2> */}
+                <Form className="m-3">
+                    <Row className="justify-content-end">
+                        <Col xs="auto">
+                            <Form.Group controlId="searchTerm">
+                                <Row className="align-items-center m-0">
+                                    <Col xs="auto">
+                                        <FontAwesomeIcon icon={faSearch} />
+                                    </Col>
+                                    <Col xs="auto">
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Search for a drug..."
+                                            value={searchTerm}
+                                            onChange={(e) => setSearchTerm(e.target.value)}
+                                        />
+                                    </Col>
+                                </Row>
+                            </Form.Group>
+                        </Col>
+                        <Col xs="auto">
+                            <Button variant="info" className="mr-2" onClick={handleSearch}>
+                                {' '}Search
+                            </Button>
+                        </Col>
+                        <Col xs="auto">
+                            <Button variant="secondary" onClick={resetSearch}>
+                                {loadingReset ? (
+                                    <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" />
+                                ) : (
+                                    'Reset'
+                                )}
+                            </Button>
+                        </Col>
+                    </Row>
+                </Form>
+                <Row>
+                    {medicineData.slice(0, visibleMedicines).map((medicine, index) => (
+                        <Col key={index} md={6}>
+                            <Card className="m-4" style={{ boxShadow: '0 4px 8px rgba(0,0,0,0.1)', backgroundColor: 'lightblue', width: '85%', height: '85%' }}>
+                                <Card.Body className='text-center'>
+                                    <Card.Title>{medicine.name.toUpperCase()}</Card.Title>
+                                    <Card.Title>{medicine.ChemicalClass !== 'NA' ? medicine.ChemicalClass : ' '}</Card.Title>
+                                    <Card.Text><strong>Substitutes:</strong> {medicine.substitute0},{' '}{medicine.substitute1},{' '}{medicine.substitute2}</Card.Text>
+                                    <Card.Text><strong>Side Effects:</strong> {medicine.sideEffect0},{' '}{medicine.sideEffect1}, {' '}{medicine.sideEffect2}</Card.Text>
+                                    <Card.Text><strong>Uses:</strong> {medicine.use0},{' '}{medicine.use1}, {' '}{medicine.use2}</Card.Text>
+                                    <Button variant='info' style={{ paddingLeft: '20px', paddingRight: '20px', border: '1.5px solid black', borderRadius: '10px' }} >Buy</Button>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    ))}
                 </Row>
-            </Form>
-            <Row>
-                {medicineData.slice(0, visibleMedicines).map((medicine, index) => (
-                    <Col key={index} md={6}>
-                        <Card className="m-4" style={{ boxShadow: '0 4px 8px rgba(0,0,0,0.1)', backgroundColor: 'lightblue', width: '85%', height: '85%'}}>
-                            <Card.Body className='text-center'>
-                                <Card.Title>{medicine.name.toUpperCase()}</Card.Title>
-                                <Card.Title>{medicine.ChemicalClass!=='NA'?medicine.ChemicalClass:' '}</Card.Title>
-                                <Card.Text><strong>Substitutes:</strong> {medicine.substitute0},{' '}{medicine.substitute1},{' '}{medicine.substitute2}</Card.Text>
-                                <Card.Text><strong>Side Effects:</strong> {medicine.sideEffect0},{' '}{medicine.sideEffect1}, {' '}{medicine.sideEffect2}</Card.Text>
-                                <Card.Text><strong>Uses:</strong> {medicine.use0},{' '}{medicine.use1}, {' '}{medicine.use2}</Card.Text>
-                                <Button variant='info' style={{paddingLeft:'20px', paddingRight:'20px', border:'1.5px solid black', borderRadius:'10px'}} >Buy</Button>
-                            </Card.Body>
-                        </Card>
-                    </Col>
-                ))}
-            </Row>
-            <div className='text-center'>
-                {visibleMedicines < medicineData.length && (
+                <div className='text-center'>
                     <Button variant="info" className="mt-3 mb-3" onClick={loadMore}>
                         View More
                     </Button>
-                )}
+                </div>
             </div>
-        </div>
         </Layout>
     );
 };

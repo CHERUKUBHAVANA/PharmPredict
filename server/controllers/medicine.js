@@ -17,22 +17,32 @@ exports.addMedicine = (req, res) => {
         })
 }
 
+// exports.displayMedicine = (req, res) => {
+//     Medicine.find()
+//         .then((drug) => {
+//             res.json(drug);
+//         })
+//         .catch((err) => {
+//             console.log(err);
+//             res.status(500).json(err);
+//         });
+// }
 exports.displayMedicine = (req, res) => {
-    const { page, limit } = req.query;
-    const skip = (page - 1) * limit;
-    try {
-        Medicine.find()
-        .then((drug)=>{
-            res.json(drug)
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 10;
+
+    Medicine.find()
+        .skip((page - 1) * limit)
+        .limit(limit)
+        .then((drugs) => {
+            res.json(drugs);
         })
-        .catch((err)=>{
-            console.log(err)
-        })
-    } catch (error) {
-        console.log(error)
-        res.status(500).json(error);
-    }
-}
+        .catch((err) => {
+            console.log(err);
+            res.status(500).json(err);
+        });
+};
+
 
 exports.searchMedicine = (req, res) => {
 

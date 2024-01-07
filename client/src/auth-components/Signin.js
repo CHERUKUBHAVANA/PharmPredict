@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import Layout from "../core-components/Layout";
 import axios from 'axios'
-import { Navigate, Link } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.min.css'
 import { authenticate, isAuth } from "./helpers";
 import withRouter from "../core-components/WithRouter";
-import { CDBInput, CDBCard, CDBCardBody, CDBIcon, CDBBtn, CDBLink, CDBContainer } from 'cdbreact';
-import { Container } from "react-bootstrap";
+import { CDBInput, CDBCard, CDBCardBody, CDBBtn, CDBLink, CDBContainer, CDBRow, CDBCol } from 'cdbreact';
 
 const Signin = ({ router }) => {
     const { navigate } = router
