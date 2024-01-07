@@ -1,5 +1,5 @@
 const Medicine = require('../models/medicine')
-
+const { spawn } = require('child_process');
 exports.addMedicine = (req, res) => {
     console.log(req.body)
     const { name, substitute0, substitute1, substitute2, substitute3, substitute4, sideEffect0, sideEffect1, sideEffect2, sideEffect3, sideEffect4, use0, use1, use2, use3, use4, ChemicalClass, ActionClass } = req.body;

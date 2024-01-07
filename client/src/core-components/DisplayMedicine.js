@@ -82,7 +82,7 @@ const DisplayMedicine = () => {
         }
     };
 
-    const handleSubmit = (e) =>{
+    const predictClass = (e) =>{
         e.preventDefault()
         axios({
             method: 'POST',
@@ -108,7 +108,6 @@ const DisplayMedicine = () => {
         <Layout>
             <ToastContainer/>
             <div>
-                {/* <h2 className="mb-4 text-center" style={{color:'darkblue'}}>Medicines List</h2> */}
                 <Form className="m-3">
                     <Row className="justify-content-end">
                         <Col xs="auto">
@@ -154,8 +153,8 @@ const DisplayMedicine = () => {
                                     <Card.Text><strong>Substitutes:</strong> {medicine.substitute0},{' '}{medicine.substitute1},{' '}{medicine.substitute2}</Card.Text>
                                     <Card.Text><strong>Side Effects:</strong> {medicine.sideEffect0},{' '}{medicine.sideEffect1}, {' '}{medicine.sideEffect2}</Card.Text>
                                     <Card.Text><strong>Uses:</strong> {medicine.use0},{' '}{medicine.use1}, {' '}{medicine.use2}</Card.Text>
-                                    <Button variant='info' style={{ paddingLeft: '20px', paddingRight: '20px', border: '1.5px solid black', borderRadius: '10px' }} >Buy</Button>
-                                    <Button variant='info' onClick={handleSubmit} style={{ paddingLeft: '20px', paddingRight: '20px', marginLeft:'10px', border: '1.5px solid black', borderRadius: '10px' }} >Therapeutic Class?</Button>
+                                    <Button variant='success' style={{ paddingLeft: '20px', paddingRight: '20px', border: '1.5px solid black', borderRadius: '10px' }} >Buy</Button>
+                                    <Button variant='dark' onClick={predictClass} style={{ paddingLeft: '20px', paddingRight: '20px', marginLeft:'10px', border: '1.5px solid white', borderRadius: '10px' }} >Find Therapeutic Class</Button>
                                 </Card.Body>
                             </Card>
                         </Col>
