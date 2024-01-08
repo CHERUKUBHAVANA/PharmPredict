@@ -62,5 +62,21 @@ exports.searchMedicine = async (req, res) => {
 }
 
 exports.predictClass = (req, res) =>{
-    
+    const {input_data} = req.body
+    console.log(input_data[0])
+    const pythonScript = spawn('py', ['C:/Users/bhava/RandomForestModel.py', input_data]);
+
+    pythonScript.stdout.on('data', (data) => {
+        const output = data.toString();
+        res.json({ result: output });
+    });
+
+    pythonScript.stderr.on('data', (data) => {
+        console.error(`Python Script Error: ${data}`);
+        // res.status(500).json({ error: 'Internal Server Error' });
+    });
+
+    pythonScript.on('close', (code) => {
+        console.log(`Python Script Closed with Code: ${code}`);
+    });
 }

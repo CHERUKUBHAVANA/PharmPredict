@@ -51,7 +51,7 @@ const DisplayMedicine = () => {
             setError('Error fetching more medicine data');
         }
     };
-    
+
     const handleSearch = async () => {
         // const filteredMedicines = medicineData.filter((medicine) =>
         //     medicine.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -82,12 +82,19 @@ const DisplayMedicine = () => {
         }
     };
 
-    const predictClass = (e) =>{
-        e.preventDefault()
-        axios({
-            method: 'POST',
-            url: `${process.env.REACT_APP_API}/predict-class`,
-        })
+    const predictClass = async (e) => {
+        e.preventDefault();
+        try {
+            setLoading(true);
+            const response = await axios.post(`${process.env.REACT_APP_API}/predict-class`, {
+                input_data: medicineData,
+            });
+            console.log(response.data.result);
+        } catch (error) {
+            toast.error('Error predicting therapeutic class');
+        } finally {
+            setLoading(false);
+        }
     }
 
     if (loading || error) {
@@ -106,7 +113,7 @@ const DisplayMedicine = () => {
 
     return (
         <Layout>
-            <ToastContainer/>
+            <ToastContainer />
             <div>
                 <Form className="m-3">
                     <Row className="justify-content-end">
@@ -154,7 +161,7 @@ const DisplayMedicine = () => {
                                     <Card.Text><strong>Side Effects:</strong> {medicine.sideEffect0},{' '}{medicine.sideEffect1}, {' '}{medicine.sideEffect2}</Card.Text>
                                     <Card.Text><strong>Uses:</strong> {medicine.use0},{' '}{medicine.use1}, {' '}{medicine.use2}</Card.Text>
                                     <Button variant='success' style={{ paddingLeft: '20px', paddingRight: '20px', border: '1.5px solid black', borderRadius: '10px' }} >Buy</Button>
-                                    <Button variant='dark' onClick={predictClass} style={{ paddingLeft: '20px', paddingRight: '20px', marginLeft:'10px', border: '1.5px solid white', borderRadius: '10px' }} >Find Therapeutic Class</Button>
+                                    <Button variant='dark' onClick={predictClass} style={{ paddingLeft: '20px', paddingRight: '20px', marginLeft: '10px', border: '1.5px solid white', borderRadius: '10px' }} >Find Therapeutic Class</Button>
                                 </Card.Body>
                             </Card>
                         </Col>
