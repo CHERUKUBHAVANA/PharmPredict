@@ -16,72 +16,78 @@ const Layout = ({ children, router }) => {
             }
         }
         return (
-        <ul className='nav text-dark m-1'>
-            <li className='nav-item'>
-                <Image src='https://dm0qx8t0i9gc9.cloudfront.net/watermarks/image/rDtN98Qoishumwih/plus-sign-in-blue-circle_G1mO_ILO_SB_PM.jpg' width={50} style={{ marginRight: '10px' }} roundedCircle />
-            </li>
-            <li className='nav-item'>
-                <Link to='/' className=' nav-link' style={isActive('/')}>
-                    Home
-                </Link>
-            </li>
-            {!isAuth() && (
-                <Fragment>
-                    <li className='nav-item'>
-                        <Link to='/pharma/signin' className=' nav-link' style={isActive('/pharma/signin')}>
-                            SignIn
-                        </Link>
-                    </li>
-                    <li className='nav-item'>
-                        <Link to='/pharma/signup' className=' nav-link' style={isActive('/pharma/signup')}>
-                            SignUp
-                        </Link>
-                    </li>
-                </Fragment>
-            )}
-
-            {isAuth() && isAuth().role === "admin" && (
+            <ul className='nav text-dark m-1'>
                 <li className='nav-item'>
-                    <Link to="/pharma/admin" className=' nav-link' style={isActive('/pharma/admin')}>
-                        {isAuth().pharmaName}
+                    <Image src='https://dm0qx8t0i9gc9.cloudfront.net/watermarks/image/rDtN98Qoishumwih/plus-sign-in-blue-circle_G1mO_ILO_SB_PM.jpg' width={50} style={{ marginRight: '10px' }} roundedCircle />
+                </li>
+                <li className='nav-item'>
+                    <Link to='/' className=' nav-link' style={isActive('/')}>
+                        Home
                     </Link>
                 </li>
-            )}
+                {!isAuth() && (
+                    <Fragment>
+                        <li className='nav-item'>
+                            <Link to='/pharma/signin' className=' nav-link' style={isActive('/pharma/signin')}>
+                                SignIn
+                            </Link>
+                        </li>
+                        <li className='nav-item'>
+                            <Link to='/pharma/signup' className=' nav-link' style={isActive('/pharma/signup')}>
+                                SignUp
+                            </Link>
+                        </li>
+                    </Fragment>
+                )}
 
-            {isAuth() && isAuth().role === "admin" && (
-                <li className='nav-item'>
-                    <Link to="/pharma/admin/add-medicine" className=' nav-link' style={isActive('/pharma/admin/add-medicines')}>
-                        Add medicines
-                    </Link>
-                </li>
-            )}
-
-            {isAuth() && isAuth().role === "pharma" && (
-                <li className='nav-item'>
-                    <Link to="/pharma/private" className=' nav-link' style={isActive('/pharma/private')}>
-                        {isAuth().pharmaName}
-                    </Link>
-                </li>
-            )}
-
-            {isAuth() && (
-                <Fragment>
+                {isAuth() && isAuth().role === "admin" && (
                     <li className='nav-item'>
-                        <Link to="/pharma/display-medicine" className=' nav-link' style={isActive('/pharma/display-medicine')}>
-                            View Medicines
+                        <Link to="/pharma/admin" className=' nav-link' style={isActive('/pharma/admin')}>
+                            {isAuth().pharmaName}
                         </Link>
                     </li>
-                    <li className='nav-item'>
-                        <span className='nav-link text-dark' style={{ cursor: 'pointer' }} onClick={() => {
-                            signout(() => {
-                                navigate('/')
-                            })
-                        }}>SignOut</span>
-                    </li>
-                </Fragment>
-            )}
+                )}
 
-        </ul>)
+                {isAuth() && isAuth().role === "admin" && (
+                    <li className='nav-item'>
+                        <Link to="/pharma/admin/add-medicine" className=' nav-link' style={isActive('/pharma/admin/add-medicines')}>
+                            Add medicines
+                        </Link>
+                    </li>
+                )}
+
+                {isAuth() && isAuth().role === "pharma" && (
+                    <li className='nav-item'>
+                        <Link to="/pharma/private" className=' nav-link' style={isActive('/pharma/private')}>
+                            {isAuth().pharmaName}
+                        </Link>
+                    </li>
+                )}
+
+                {isAuth() && (
+                    <Fragment>
+                        <li className='nav-item'>
+                            <Link to="/pharma/display-medicine" className=' nav-link' style={isActive('/pharma/display-medicine')}>
+                                View Medicines
+                            </Link>
+                        </li>
+                        <li className='nav-item'>
+                            <Link to="/pharma/analytics" className=' nav-link' style={isActive('/pharma/analytics')}>
+                                View Analytics
+                            </Link>
+                        </li>
+                        <li className='nav-item'>
+                            <span className='nav-link text-dark' style={{ cursor: 'pointer' }} onClick={() => {
+                                signout(() => {
+                                    navigate('/')
+                                })
+                            }}>SignOut</span>
+                        </li>
+                        
+                    </Fragment>
+                )}
+
+            </ul>)
     }
 
     return (

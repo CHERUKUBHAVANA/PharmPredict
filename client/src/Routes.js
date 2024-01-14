@@ -13,6 +13,7 @@ import ResetPassword from './auth-components/ResetPassword'
 import AddMedicine from './admin-components/AddMedicine'
 import DisplayMedicine from './core-components/DisplayMedicine'
 import PredictClass from './prediction-components/PredictClass'
+import ViewAnalytics from './core-components/ViewAnalytics'
 const PharmRoutes = ()=>{
     return(
         <BrowserRouter>
@@ -28,6 +29,7 @@ const PharmRoutes = ()=>{
                 <Route path="/auth/password/reset/:token" exact element={<ResetPassword/>}/>
                 <Route path="/pharma/display-medicine" exact element={<DisplayMedicine/>}/>
                 <Route path="/pharma/predict-class" exact element={<PredictClass/>}/>
+                <Route path='/pharma/analytics' exact element={<ViewAnalytics/>}/>
             </Routes>
         </BrowserRouter>
     )
