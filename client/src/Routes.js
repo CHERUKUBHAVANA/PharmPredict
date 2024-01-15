@@ -14,6 +14,7 @@ import AddMedicine from './admin-components/AddMedicine'
 import DisplayMedicine from './core-components/DisplayMedicine'
 import PredictClass from './prediction-components/PredictClass'
 import ViewAnalytics from './core-components/ViewAnalytics'
+import ViewCart from './core-components/ViewCart'
 const PharmRoutes = ()=>{
     return(
         <BrowserRouter>
@@ -30,6 +31,7 @@ const PharmRoutes = ()=>{
                 <Route path="/pharma/display-medicine" exact element={<DisplayMedicine/>}/>
                 <Route path="/pharma/predict-class" exact element={<PredictClass/>}/>
                 <Route path='/pharma/analytics' exact element={<ViewAnalytics/>}/>
+                <Route path='/pharma/view-cart' exact element={<ViewCart/>}/>
             </Routes>
         </BrowserRouter>
     )

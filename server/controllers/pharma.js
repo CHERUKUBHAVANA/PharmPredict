@@ -63,3 +63,7 @@ exports.update = (req, res) => {
         })
     })
 }
+
+exports.viewCart = (req, res) => {
+    console.log("Server side")
+}

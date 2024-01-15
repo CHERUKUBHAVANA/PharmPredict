@@ -67,7 +67,7 @@ const App = () => {
           </Col>
         </Row>
       </Container>
-    </Layout>
+    </Layout> 
   );
 };
 
