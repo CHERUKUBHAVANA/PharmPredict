@@ -36,6 +36,9 @@ const pharmaSchema = new mongoose.Schema({
     resetPasswordLink:{
         data: String,
         // default: ''
+    },
+    cart:{
+        type: Array
     }
 }, {timestamps: true})
 

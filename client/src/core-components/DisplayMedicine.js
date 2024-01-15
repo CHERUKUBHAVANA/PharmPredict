@@ -6,6 +6,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import Layout from './Layout';
 import { toast, ToastContainer } from 'react-toastify'
+import { isAuth } from '../auth-components/helpers';
+
 
 const DisplayMedicine = () => {
     const [medicineData, setMedicineData] = useState([]);
@@ -53,15 +55,10 @@ const DisplayMedicine = () => {
     };
 
     const handleSearch = async () => {
-        // const filteredMedicines = medicineData.filter((medicine) =>
-        //     medicine.name.toLowerCase().includes(searchTerm.toLowerCase())
-        // );
-        // setMedicineData(filteredMedicines)
-        // setVisibleMedicines(10);
         try {
             setLoading(true);
+
             const response = await axios.get(`${process.env.REACT_APP_API}/search-medicine?searchTerm=${searchTerm}`);
-            // setFilteredMedicineData(response.data);
             setMedicineData(response.data);
             setVisibleMedicines(10);
         } catch (error) {
@@ -97,15 +94,18 @@ const DisplayMedicine = () => {
         }
     }
 
-    const viewCart = (e) =>{
-        // e.preventDefault();
-        console.log("Entered")
-        axios.get(`${process.env.REACT_APP_API}/view-cart`)
-        .then(()=>{
-
+    const addToCart = async (medicine, id, e) =>{
+        e.preventDefault()
+        console.log(medicine, id)
+        await axios.post(`${process.env.REACT_APP_API}/add-to-cart`, {
+            medicine: medicine,
+            id: id
+        })
+        .then((response)=>{
+            toast.success(response.data.message)
         })
         .catch((err)=>{
-            console.log(err)
+            toast.error("Error adding product to cart")
         })
     }
 
@@ -172,7 +172,7 @@ const DisplayMedicine = () => {
                                     <Card.Text><strong>Substitutes:</strong> {medicine.substitute0},{' '}{medicine.substitute1},{' '}{medicine.substitute2}</Card.Text>
                                     <Card.Text><strong>Side Effects:</strong> {medicine.sideEffect0},{' '}{medicine.sideEffect1}, {' '}{medicine.sideEffect2}</Card.Text>
                                     <Card.Text><strong>Uses:</strong> {medicine.use0},{' '}{medicine.use1}, {' '}{medicine.use2}</Card.Text>
-                                    <Button variant='success' style={{ paddingLeft: '20px', paddingRight: '20px', border: '1.5px solid black', borderRadius: '10px' }} onClick={viewCart}>Add to Cart</Button>
+                                    <Button variant='success' style={{ paddingLeft: '20px', paddingRight: '20px', border: '1.5px solid black', borderRadius: '10px' }} onClick={(e)=>addToCart(medicine, isAuth()._id, e)}>Add to Cart</Button>
                                     <Button variant='dark' onClick={predictClass} style={{ paddingLeft: '20px', paddingRight: '20px', marginLeft: '10px', border: '1.5px solid white', borderRadius: '10px' }} >Find Therapeutic Class</Button>
                                 </Card.Body>
                             </Card>

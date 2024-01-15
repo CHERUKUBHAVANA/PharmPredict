@@ -72,6 +72,11 @@ const Layout = ({ children, router }) => {
                             </Link>
                         </li>
                         <li className='nav-item'>
+                            <Link to="/pharma/view-cart" className=' nav-link' style={isActive('/pharma/view-cart')}>
+                                View Cart
+                            </Link>
+                        </li>
+                        <li className='nav-item'>
                             <Link to="/pharma/analytics" className=' nav-link' style={isActive('/pharma/analytics')}>
                                 View Analytics
                             </Link>

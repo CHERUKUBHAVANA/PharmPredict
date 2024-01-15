@@ -1,8 +1,10 @@
 const Pharmacy = require('../models/pharmacy')
+const Drug = require('../models/medicine')
 const elasticEmail = require('@elasticemail/elasticemail-client');
 const { expressjwt } = require("express-jwt");
 const jwt = require('jsonwebtoken')
 const _ = require('lodash')
+const mongoose = require('mongoose');
 
 exports.signup = (req, res) => {
     //console.log(req.body)
@@ -279,4 +281,60 @@ exports.resetPassword = (req, res) => {
     }
 }
 
-
+exports.addToCart = (req, res) => {
+    const medicine = req.body.medicine
+    const id = req.body.id;
+    Pharmacy.findById(id).exec()
+    .then((pharma)=>{
+        // console.log(pharma)
+        if(!pharma.cart){console.log("No cart");
+        pharma.cart = []}
+        // console.log(pharma)
+        pharma.cart.push({
+            name: medicine.name,
+            substitute0: medicine.substitute0,
+            substitute1: medicine.substitute1,
+            substitute2: medicine.substitute2,
+            substitute3: medicine.substitute3,
+            substitute4: medicine.substitute4,
+            sideEffect0: medicine.sideEffect0,
+            sideEffect1: medicine.sideEffect1,
+            sideEffect2: medicine.sideEffect2,
+            sideEffect3: medicine.sideEffect3,
+            sideEffect4: medicine.sideEffect4,
+            use0: medicine.use0,
+            use1: medicine.use1,
+            use2: medicine.use2,
+            use3: medicine.use3,
+            use4: medicine.use4,
+        })
+        pharma.save()
+        .then(()=>{
+            console.log("Saved")
+        })
+        .catch((err)=>{
+           console.log("Error saving")
+        })
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+    res.status(200).json({ message: "Product added to cart successfully" })
+}
+exports.getCart = (req, res) =>{
+    const id = req.params.id; 
+    console.log(id)
+    Pharmacy.findById(id).exec()
+    .then((pharma)=>{
+        console.log(pharma)
+        
+        res.status(200).json({
+            "cart": pharma.cart
+        })
+    })
+    .catch((err)=>{
+        res.status(400).json({
+            "error": "No such pharmacy found!"
+        })
+    })
+}
