@@ -57,7 +57,6 @@ const DisplayMedicine = () => {
     const handleSearch = async () => {
         try {
             setLoading(true);
-
             const response = await axios.get(`${process.env.REACT_APP_API}/search-medicine?searchTerm=${searchTerm}`);
             setMedicineData(response.data);
             setVisibleMedicines(10);

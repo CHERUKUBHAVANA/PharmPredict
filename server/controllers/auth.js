@@ -137,25 +137,25 @@ exports.requireSignin = expressjwt({ //Middleware -  so that only authorized/log
 exports.adminMiddleware = (req, res, next) => {
     // console.log(req.auth)
     Pharmacy.findById({ _id: req.auth._id }).exec()
-    .then((user)=>{
-        if (!user) {
+        .then((user) => {
+            if (!user) {
+                return res.status(400).json({
+                    error: "Pharma not found"
+                })
+            }
+            if (user.role !== "admin") {
+                return res.status(400).json({
+                    error: "Admin resource access denied"
+                })
+            }
+            req.profile = user
+            next()
+        })
+        .catch((err) => {
             return res.status(400).json({
                 error: "Pharma not found"
             })
-        }
-        if (user.role !== "admin") {
-            return res.status(400).json({
-                error: "Admin resource access denied"
-            })
-        }
-        req.profile = user
-        next()
-    })
-    .catch((err)=>{
-        return res.status(400).json({
-            error: "Pharma not found"
         })
-    })
 }
 
 exports.forgotPassword = (req, res) => {
@@ -224,12 +224,12 @@ exports.forgotPassword = (req, res) => {
                     })
                 })
         })
-        .catch((err)=>{
+        .catch((err) => {
             return res.status(400).json({
                 error: "Email doesn't exist"
             })
         })
-        
+
 }
 
 exports.resetPassword = (req, res) => {
@@ -267,14 +267,14 @@ exports.resetPassword = (req, res) => {
                         })
 
                 })
-                .catch((err)=>{
+                .catch((err) => {
                     return res.status(400).json({
                         "error": "Error resetting password"
                     })
                 })
         })
     }
-    else{
+    else {
         return res.status(400).json({
             "error": "Error resetting password"
         })
@@ -285,56 +285,70 @@ exports.addToCart = (req, res) => {
     const medicine = req.body.medicine
     const id = req.body.id;
     Pharmacy.findById(id).exec()
-    .then((pharma)=>{
-        // console.log(pharma)
-        if(!pharma.cart){console.log("No cart");
-        pharma.cart = []}
-        // console.log(pharma)
-        pharma.cart.push({
-            name: medicine.name,
-            substitute0: medicine.substitute0,
-            substitute1: medicine.substitute1,
-            substitute2: medicine.substitute2,
-            substitute3: medicine.substitute3,
-            substitute4: medicine.substitute4,
-            sideEffect0: medicine.sideEffect0,
-            sideEffect1: medicine.sideEffect1,
-            sideEffect2: medicine.sideEffect2,
-            sideEffect3: medicine.sideEffect3,
-            sideEffect4: medicine.sideEffect4,
-            use0: medicine.use0,
-            use1: medicine.use1,
-            use2: medicine.use2,
-            use3: medicine.use3,
-            use4: medicine.use4,
+        .then((pharma) => {
+            // console.log(pharma)
+            if (!pharma.cart) {
+                console.log("No cart");
+                pharma.cart = []
+            }
+            // console.log(pharma)
+            pharma.cart.push({
+                name: medicine.name,
+                substitute0: medicine.substitute0,
+                substitute1: medicine.substitute1,
+                substitute2: medicine.substitute2,
+                substitute3: medicine.substitute3,
+                substitute4: medicine.substitute4,
+                sideEffect0: medicine.sideEffect0,
+                sideEffect1: medicine.sideEffect1,
+                sideEffect2: medicine.sideEffect2,
+                sideEffect3: medicine.sideEffect3,
+                sideEffect4: medicine.sideEffect4,
+                use0: medicine.use0,
+                use1: medicine.use1,
+                use2: medicine.use2,
+                use3: medicine.use3,
+                use4: medicine.use4,
+                id: medicine._id
+            })
+            pharma.save()
+                .then(() => {
+                    console.log("Saved")
+                })
+                .catch((err) => {
+                    console.log("Error saving")
+                })
         })
-        pharma.save()
-        .then(()=>{
-            console.log("Saved")
+        .catch((err) => {
+            console.log(err)
         })
-        .catch((err)=>{
-           console.log("Error saving")
-        })
-    })
-    .catch((err)=>{
-        console.log(err)
-    })
     res.status(200).json({ message: "Product added to cart successfully" })
 }
-exports.getCart = (req, res) =>{
-    const id = req.params.id; 
-    console.log(id)
+exports.getCart = (req, res) => {
+    const id = req.params.id;
     Pharmacy.findById(id).exec()
-    .then((pharma)=>{
-        console.log(pharma)
-        
-        res.status(200).json({
-            "cart": pharma.cart
+        .then((pharma) => {
+
+            res.status(200).json({
+                "cart": pharma.cart
+            })
         })
-    })
-    .catch((err)=>{
-        res.status(400).json({
-            "error": "No such pharmacy found!"
+        .catch((err) => {
+            res.status(400).json({
+                "error": "No such pharmacy found!"
+            })
         })
-    })
+}
+exports.removeFromCart = (req, res) => {
+    const userId = req.params.userId
+    const drugId = req.params.drugId
+    Pharmacy.findOneAndUpdate({ _id: userId }, { $pull: { cart: { id: drugId } } },
+        { new: true }).exec()
+        .then((pharma) => {
+            if (!pharma) {
+                return res.status(404).json({ error: 'Pharmacy not found' });
+            }
+
+            return res.status(200).json({ message: 'Drug removed successfully', pharmacy: pharma });
+        })
 }
