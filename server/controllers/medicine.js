@@ -53,40 +53,14 @@ exports.searchMedicine = async (req, res) => {
 
 exports.predictClass = (req, res) => {
     const { input_data } = req.body
-    // console.log(input_data[0])
-    // const pythonScript = spawn('py', ['C:/Users/bhava/RandomForestModel.py', input_data]);
-
-    // pythonScript.stdout.on('data', (data) => {
-    //     const output = data.toString();
-    //     res.json({ result: output });
-    // });
-
-    // pythonScript.stderr.on('data', (data) => {
-    //     console.error(`Python Script Error: ${data}`);
-    //     // res.status(500).json({ error: 'Internal Server Error' });
-    // });
-
-    // pythonScript.on('close', (code) => {
-    //     console.log(`Python Script Closed with Code: ${code}`);
-    // });
-    const pythonProcess = spawn('py', ['C:/Users/bhava/predict.py', input_data]);
-
-    pythonProcess.stdin.write(JSON.stringify(input_data));
-    pythonProcess.stdin.end();
-
+    const input_data_json = JSON.stringify(input_data);
+    const pythonProcess = spawn('py', ['C:/Users/bhava/predict.py', input_data_json]);
     pythonProcess.stdout.on('data', (data) => {
-        const result = JSON.parse(data);
-        console.log("Hi")
-        console.log(result.predictions);
-    });
-    pythonProcess.stderr.on('data', (data) => {
-        console.error(`Error from Python script: ${data}`);
-    });
-
-    pythonProcess.on('close', (code) => {
-        if (code !== 0) {
-            console.error(`Python script exited with code ${code}`);
-        }
+        const result = JSON.parse(data.toString());
+        // console.log(result.result)
+        return res.json({
+            message: `Therapeutic class is ${result.result}`
+        })
     });
 }
 

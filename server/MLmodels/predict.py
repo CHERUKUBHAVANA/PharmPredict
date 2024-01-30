@@ -9,4 +9,4 @@ features = data['features']
 predictions = clf.predict([features])
 print(predictions)
 print(json.dumps({'predictions': predictions.tolist()}))
-print("Hello")
+print("Hello World")

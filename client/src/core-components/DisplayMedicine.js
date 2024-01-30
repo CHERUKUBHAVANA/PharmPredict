@@ -7,7 +7,7 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import Layout from './Layout';
 import { toast, ToastContainer } from 'react-toastify'
 import { isAuth } from '../auth-components/helpers';
-
+import '../App.css'
 
 const DisplayMedicine = () => {
     const [medicineData, setMedicineData] = useState([]);
@@ -16,6 +16,7 @@ const DisplayMedicine = () => {
     const [error, setError] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
     const [loadingReset, setLoadingReset] = useState(false);
+
     const fetchMedicineData = async () => {
         try {
             const response = await axios.get(`${process.env.REACT_APP_API}/display-medicine`, {
@@ -78,14 +79,14 @@ const DisplayMedicine = () => {
         }
     };
 
-    const predictClass = async (e) => {
-        e.preventDefault();
+    const predictClass = async (medicine) => {
         try {
             setLoading(true);
+            console.log(medicine)
             const response = await axios.post(`${process.env.REACT_APP_API}/predict-class`, {
-                input_data: medicineData,
+                input_data: medicine,
             });
-            console.log(response.data.result);
+            toast.success(response.data.message)
         } catch (error) {
             toast.error('Error predicting therapeutic class');
         } finally {
@@ -93,19 +94,19 @@ const DisplayMedicine = () => {
         }
     }
 
-    const addToCart = async (medicine, id, e) =>{
+    const addToCart = async (medicine, id, e) => {
         e.preventDefault()
         console.log(medicine, id)
         await axios.post(`${process.env.REACT_APP_API}/add-to-cart`, {
             medicine: medicine,
             id: id
         })
-        .then((response)=>{
-            toast.success(response.data.message)
-        })
-        .catch((err)=>{
-            toast.error("Error adding product to cart")
-        })
+            .then((response) => {
+                toast.success(response.data.message)
+            })
+            .catch((err) => {
+                toast.error("Error adding product to cart")
+            })
     }
 
     if (loading || error) {
@@ -171,8 +172,8 @@ const DisplayMedicine = () => {
                                     <Card.Text><strong>Substitutes:</strong> {medicine.substitute0},{' '}{medicine.substitute1},{' '}{medicine.substitute2}</Card.Text>
                                     <Card.Text><strong>Side Effects:</strong> {medicine.sideEffect0},{' '}{medicine.sideEffect1}, {' '}{medicine.sideEffect2}</Card.Text>
                                     <Card.Text><strong>Uses:</strong> {medicine.use0},{' '}{medicine.use1}, {' '}{medicine.use2}</Card.Text>
-                                    <Button variant='success' style={{ paddingLeft: '20px', paddingRight: '20px', border: '1.5px solid black', borderRadius: '10px' }} onClick={(e)=>addToCart(medicine, isAuth()._id, e)}>Add to Cart</Button>
-                                    <Button variant='dark' onClick={predictClass} style={{ paddingLeft: '20px', paddingRight: '20px', marginLeft: '10px', border: '1.5px solid white', borderRadius: '10px' }} >Find Therapeutic Class</Button>
+                                    <Button variant='success' style={{ paddingLeft: '20px', paddingRight: '20px', border: '1.5px solid black', borderRadius: '10px' }} onClick={(e) => addToCart(medicine, isAuth()._id, e)}>Add to Cart</Button>
+                                    <Button variant='dark' onClick={() => predictClass(medicine)} style={{ paddingLeft: '20px', paddingRight: '20px', marginLeft: '10px', border: '1.5px solid white', borderRadius: '10px' }} >Find Therapeutic Class</Button>
                                 </Card.Body>
                             </Card>
                         </Col>
