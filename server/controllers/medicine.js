@@ -59,7 +59,7 @@ exports.predictClass = (req, res) => {
         const result = JSON.parse(data.toString());
         // console.log(result.result)
         return res.json({
-            message: `Therapeutic class is ${result.result}`
+            message: `Therapeutic class is "${result.result}"`
         })
     });
 }
