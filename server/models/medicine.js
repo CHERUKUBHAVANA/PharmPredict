@@ -90,6 +90,9 @@ const medicineSchema = new mongoose.Schema({
         type: String,
         trim: true,
         max: 100
+    },
+    price:{
+        type: Number,
     }
 }, {timestamps: true})
 

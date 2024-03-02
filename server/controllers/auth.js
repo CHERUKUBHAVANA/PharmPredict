@@ -294,6 +294,7 @@ exports.addToCart = (req, res) => {
             // console.log(pharma)
             pharma.cart.push({
                 name: medicine.name,
+                price: medicine.price,
                 substitute0: medicine.substitute0,
                 substitute1: medicine.substitute1,
                 substitute2: medicine.substitute2,

@@ -287,7 +287,7 @@ const DisplayMedicine = () => {
                 },
             });
             setMedicineData(response.data);
-            setTotalPages(Math.ceil(250000 / 10)); 
+            setTotalPages(Math.ceil(250000 / 10));
             setLoading(false);
         } catch (error) {
             console.error(error);
@@ -380,7 +380,7 @@ const DisplayMedicine = () => {
 
         const medicineInfo = document.createElement('div');
         medicineInfo.innerHTML = "<b> Name </b> : " + medicine.name + "<br>" +
-        "<b> Substitues </b> : " + medicine.substitute0 + ", " + medicine.substitute1 + ", " + medicine.substitute2 + "," + medicine.substitute3 +", "+ medicine.substitute4 +"<br>" + " <b> Side Effects </b>: " +  medicine.sideEffect0 + ", " + medicine.sideEffect1 + ", " + medicine.sideEffect2;
+            "<b> Substitues </b> : " + medicine.substitute0 + ", " + medicine.substitute1 + ", " + medicine.substitute2 + "," + medicine.substitute3 + ", " + medicine.substitute4 + "<br>" + " <b> Side Effects </b>: " + medicine.sideEffect0 + ", " + medicine.sideEffect1 + ", " + medicine.sideEffect2;
         card.appendChild(medicineInfo);
 
         card.style.position = 'fixed';
@@ -408,86 +408,87 @@ const DisplayMedicine = () => {
             document.getElementById('root').style.filter = 'blur(0)'
         });
         document.body.appendChild(card);
-}
+    }
 
-if (loading || error) {
-    return (
-        <div className={`text-center mt-5 ${error ? 'error-state' : ''}`}>
-            {error ? (
-                <Alert variant="danger">
-                    <strong>Error:</strong> {error}
-                </Alert>
-            ) : (
-                <Spinner animation="border" role="status">
-                    <span className="sr-only">Loading...</span>
-                </Spinner>
-            )}
-        </div>
-    );
-}
-
-return (
-    <Layout>
-        <ToastContainer />
-        <div>
-            <Form className="m-3">
-                <Form.Group controlId="searchTerm">
-                    <Form.Control
-                        type="text"
-                        style={{ width: '20rem', marginBottom: '1rem' }}
-                        placeholder="Search for a drug..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                </Form.Group>
-                <Button variant="info" className="mr-2" onClick={handleSearch} style={{ marginRight: '1rem' }}>
-                    <FontAwesomeIcon icon={faSearch} />
-                    {' '}Search
-                </Button>
-                <Button variant="secondary" onClick={resetSearch} disabled={loadingReset}>
-                    {loadingReset ? 'Resetting...' : 'Reset'}
-                </Button>
-            </Form>
-            <Table striped bordered hover responsive>
-                <thead style={{ textAlign: 'center' }}>
-                </thead>
-                <tbody style={{ textAlign: 'center' }}>
-                    {medicineData.map((medicine, index) => (
-                        <tr key={index}>
-                            <td>
-                                <div>
-                            {medicine.name.toUpperCase()}
-                            <Image src='../../info_icon.png' className='description' style={{width:'1.5rem', height:'1.9rem',marginLeft:'1rem', cursor:'pointer', borderRadius: '20%'}} onClick={() => showDrugCard(medicine)}></Image>
-                            </div>
-                            </td>
-                            <td>
-                                <Button variant='success' style={{ marginRight: '1rem' }} onClick={(e) => addToCart(medicine, isAuth()._id, e)}>Add to Cart</Button>
-                                <Button variant='dark' onClick={() => predictClass(medicine, index)} style={{ marginLeft: '10px' }}>Find Therapeutic Class</Button>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </Table>
-            <div className="pagination" style={{display:'grid', gridTemplateColumns:'auto auto auto auto auto auto auto', columnGap:'3px', marginBottom:'2rem'}}>
-                <Button variant="secondary" disabled={currentPage === 1} style={{margin:'0'}} onClick={handlePrevPage}>
-                    Previous
-                </Button>
-                {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => (
-                    <Button
-                        key={i}
-                        variant={currentPage === i + 1 ? 'primary' : 'secondary'}
-                        onClick={() => handlePageChange(i + 1)}
-                    >
-                        {i + 1}
-                    </Button>
-                ))}
-                <Button variant="secondary" disabled={currentPage === totalPages} onClick={handleNextPage}>
-                    Next
-                </Button>
+    if (loading || error) {
+        return (
+            <div className={`text-center mt-5 ${error ? 'error-state' : ''}`}>
+                {error ? (
+                    <Alert variant="danger">
+                        <strong>Error:</strong> {error}
+                    </Alert>
+                ) : (
+                    <Spinner animation="border" role="status">
+                        <span className="sr-only">Loading...</span>
+                    </Spinner>
+                )}
             </div>
-        </div>
-    </Layout>
-);
+        );
+    }
+
+    return (
+        <Layout>
+            <ToastContainer />
+            <div>
+                <Form className="m-3">
+                    <Form.Group controlId="searchTerm">
+                        <Form.Control
+                            type="text"
+                            style={{ width: '20rem', marginBottom: '1rem' }}
+                            placeholder="Search for a drug..."
+                            value={searchTerm}
+                            onChange={(e) => setSearchTerm(e.target.value)}
+                        />
+                    </Form.Group>
+                    <Button variant="info" className="mr-2" onClick={handleSearch} style={{ marginRight: '1rem' }}>
+                        <FontAwesomeIcon icon={faSearch} />
+                        {' '}Search
+                    </Button>
+                    <Button variant="secondary" onClick={resetSearch} disabled={loadingReset}>
+                        {loadingReset ? 'Resetting...' : 'Reset'}
+                    </Button>
+                </Form>
+                <Table striped bordered hover responsive>
+                    <thead style={{ textAlign: 'center' }}>
+                    </thead>
+                    <tbody style={{ textAlign: 'center' }}>
+                        {medicineData.map((medicine, index) => (
+                            <tr key={index}>
+                                <td>
+                                    <div>
+                                        {medicine.name.toUpperCase()}
+                                        <Image src='../../info_icon.png' className='description' style={{ width: '1.5rem', height: '1.9rem', marginLeft: '1rem', cursor: 'pointer', borderRadius: '20%' }} onClick={() => showDrugCard(medicine)}></Image>
+                                        <div><p> {medicine.name.includes("syrup") || medicine.name.includes("cream") ? "₹"+Math.floor(medicine.price/3)+".00": "(strip of 15)"+" ₹"+Math.floor(medicine.price/3)+".00"}</p></div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <Button variant='success' style={{ marginRight: '1rem' }} onClick={(e) => addToCart(medicine, isAuth()._id, e)}>Add to Cart</Button>
+                                    <Button variant='dark' onClick={() => predictClass(medicine, index)} style={{ marginLeft: '10px' }}>Find Therapeutic Class</Button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </Table>
+                <div className="pagination" style={{ display: 'grid', gridTemplateColumns: 'auto auto auto auto auto auto auto', columnGap: '3px', marginBottom: '2rem' }}>
+                    <Button variant="secondary" disabled={currentPage === 1} style={{ margin: '0' }} onClick={handlePrevPage}>
+                        Previous
+                    </Button>
+                    {Array.from({ length: Math.min(totalPages, 5) }, (_, i) => (
+                        <Button
+                            key={i}
+                            variant={currentPage === i + 1 ? 'primary' : 'secondary'}
+                            onClick={() => handlePageChange(i + 1)}
+                        >
+                            {i + 1}
+                        </Button>
+                    ))}
+                    <Button variant="secondary" disabled={currentPage === totalPages} onClick={handleNextPage}>
+                        Next
+                    </Button>
+                </div>
+            </div>
+        </Layout>
+    );
 };
 
 export default DisplayMedicine;
