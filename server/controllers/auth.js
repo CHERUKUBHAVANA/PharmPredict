@@ -310,7 +310,8 @@ exports.addToCart = (req, res) => {
                 use2: medicine.use2,
                 use3: medicine.use3,
                 use4: medicine.use4,
-                id: medicine._id
+                id: medicine._id,
+                class: medicine['Therapeutic Class']
             })
             pharma.save()
                 .then(() => {
@@ -361,7 +362,7 @@ exports.getOrders = (req, res) => {
             const cart = pharma.cart
             orders[pharma.pharmaName] = [];
             cart.forEach((drug)=>{
-                orders[pharma.pharmaName].push(drug.name)
+                orders[pharma.pharmaName].push(drug)
             })
         })
         res.status(200).json({
