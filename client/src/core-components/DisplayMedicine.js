@@ -462,7 +462,7 @@ const DisplayMedicine = () => {
                                     </div>
                                 </td>
                                 <td>
-                                    <Button variant='success' style={{ marginRight: '1rem' }} onClick={(e) => addToCart(medicine, isAuth()._id, e)}>Add to Cart</Button>
+                                    {isAuth() && isAuth().role === "pharma" &&<Button variant='success' style={{ marginRight: '1rem' }} onClick={(e) => addToCart(medicine, isAuth()._id, e)}>Add to Cart</Button>}
                                     <Button variant='dark' onClick={() => predictClass(medicine, index)} style={{ marginLeft: '10px' }}>Find Therapeutic Class</Button>
                                 </td>
                             </tr>

@@ -353,3 +353,22 @@ exports.removeFromCart = (req, res) => {
             return res.status(200).json({ message: 'Drug removed successfully', pharmacy: pharma });
         })
 }
+exports.getOrders = (req, res) => {
+    Pharmacy.find({}).exec()
+    .then((pharmacies)=>{
+        const orders = {}
+        pharmacies.forEach((pharma)=>{
+            const cart = pharma.cart
+            orders[pharma.pharmaName] = [];
+            cart.forEach((drug)=>{
+                orders[pharma.pharmaName].push(drug.name)
+            })
+        })
+        res.status(200).json({
+            "orders" : orders
+        })
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+}

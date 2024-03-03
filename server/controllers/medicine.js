@@ -67,4 +67,7 @@ exports.predictClass = (req, res) => {
 exports.viewAnalytics = (req, res) => {
 
 }
+exports.viewOrders = (req, res) =>{
+    
+}
 

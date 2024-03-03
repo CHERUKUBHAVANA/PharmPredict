@@ -71,16 +71,19 @@ const Layout = ({ children, router }) => {
                                 View Medicines
                             </Link>
                         </li>
-                        <li className='nav-item'>
+                        {isAuth().role==="pharma" && <li className='nav-item'>
                             <Link to="/pharma/view-cart" className=' nav-link' style={isActive('/pharma/view-cart')}>
                                 View Cart
                             </Link>
-                        </li>
+                        </li>}
                         <li className='nav-item'>
                             <Link to="/pharma/analytics" className=' nav-link' style={isActive('/pharma/analytics')}>
                                 View Analytics
                             </Link>
                         </li>
+                        {isAuth().role==="admin" && <li className='nav-item'>
+                            <Link to="/pharma/orders" className=' nav-link' style={isActive('/pharma/orders')}>View Orders</Link>
+                        </li>}
                         <li className='nav-item'>
                             <span className='nav-link text-dark' style={{ cursor: 'pointer' }} onClick={() => {
                                 signout(() => {
